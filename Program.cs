@@ -31,7 +31,6 @@ namespace TupleGeneratorGUI
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseAntiforgery();
             app.MapStaticAssets();
 
