@@ -41,7 +41,7 @@ The core C++ library has been optimized with batch-based reading/writing, virtua
 - Import data collections
 - Generate data collections (uniform, normal, lognormal, diagonal, Sierpiński, bit)
 - Generate query collections (point, partial match, narrow range, range, cartesian range)
-- Generate and visualize histograms
+- Generate & visualize histograms
 - Sort & shuffle data collections
 - Export to files (`.ctf` for data collections, `.qtf` for query collections, `.txt` for histograms, `.sql` for SQL INSERT queries and SQL SELECT queries)
 - Real-time progress bar for long operations
