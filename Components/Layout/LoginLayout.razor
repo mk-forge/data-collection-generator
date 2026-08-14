@@ -1,0 +1,158 @@
+﻿@inherits LayoutComponentBase
+@inject IJSRuntime JS
+
+<div class="blur-background"></div>
+
+<div class="layout-root">
+    <div class="top-nav">
+        <nav class="nav horizontal-nav">
+            <NavLink class="nav-link" href="/kolekce" Match="NavLinkMatch.Prefix" tabindex="-1">
+                <img src="images/data_collections.png" class="nav-icon"/>
+                Datové kolekce
+            </NavLink>
+            <button id="mode" type="button" tabindex="-1"></button>
+            <NavLink class="nav-link" href="/dotazy" Match="NavLinkMatch.Prefix" tabindex="-1">
+                <img src="images/queries.png" class="nav-icon"/>
+                Dotazy
+            </NavLink>
+        </nav>
+    </div>
+
+    <div class="mobile-nav mobile-only">
+        <button class="hamburger" tabindex="-1">☰</button>
+        <button id="mode-mobile" class="mobile-mode" type="button" tabindex="-1"></button>
+    </div>
+
+    <main>
+        <article class="content px-4">
+            <div class="mt-3">
+                <div class="query-layout">
+                    <div class="query-main">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <button class="nav-link active" tabindex="-1">
+                                    Uniformní
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" tabindex="-1">
+                                    Normální
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" tabindex="-1">
+                                    Logonormální
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" tabindex="-1">
+                                    Diagonální
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" tabindex="-1">
+                                    Sierpińského
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" tabindex="-1">
+                                    Bitová
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="card mb-3 p-3">
+                            <div class="main-title">Nastavení pro uniformní distribuci</div>
+                            <div class="row">
+                                <div class="col-auto d-flex flex-column justify-content-end mt-2">
+                                    <label>Počet n-tic:</label>
+                                    <input type="number" class="form-control input-150" min="2" value="1000000" tabindex="-1"/>
+                                </div>
+                                <div class="col-auto d-flex flex-column justify-content-end mt-2">
+                                    <label>Počet dimenzí:</label>
+                                    <input type="number" class="form-control input-150" min="2" value="16" tabindex="-1"/>
+                                </div>
+                                <div class="col-auto d-flex flex-column justify-content-end mt-2">
+                                    <label>Minimální hodnota:</label>
+                                    <input type="number" class="form-control input-150" min="0" value="1" tabindex="-1"/>
+                                </div>
+                                <div class="col-auto d-flex flex-column justify-content-end mt-2">
+                                    <label>Maximální hodnota:</label>
+                                    <input type="number" class="form-control input-150" min="1" value="1000" tabindex="-1"/>
+                                </div>
+                            </div>
+
+                            <div class="section-header">Práce s datovou kolekcí:</div>
+                            <div class="d-flex flex-wrap gap-2 mt-2">
+                                <button class="btn btn-blue" tabindex="-1">
+                                    <img src="images/generate.png" class="nav-icon me-2"/>
+                                    Generovat datovou kolekci
+                                </button>
+                                <button class="btn btn-blue" tabindex="-1">
+                                    <img src="images/import.png" class="nav-icon me-2"/>
+                                    Importovat datovou kolekci
+                                </button>
+                                <button class="btn btn-blue" tabindex="-1">
+                                    <img src="images/view.png" class="nav-icon me-2"/>
+                                    Zobrazit datovou kolekci
+                                </button>
+                                <button class="btn btn-blue" tabindex="-1">
+                                    <img src="images/shuffle.png" class="nav-icon me-2"/>
+                                    Promíchat datovou kolekci
+                                </button>
+                                <button class="btn btn-blue" tabindex="-1">
+                                    <img src="images/sort.png" class="nav-icon me-2"/>
+                                    Seřadit datovou kolekci (lexikograficky)
+                                </button>
+                                <button class="btn btn-blue" tabindex="-1">
+                                    <img src="images/z-sort.png" class="nav-icon me-2"/>
+                                    Seřadit datovou kolekci (podle Z-Order)
+                                </button>
+                            </div>
+
+                            <div class="section-header">Práce s histogramem:</div>
+                            <div class="mt-2">
+                                <div class="form-check mb-2 d-flex align-items-start gap-2">
+                                    <input class="form-check-input" type="checkbox" checked="checked" id="useIntervalsCheckbox" tabindex="-1"/>
+                                    <label for="useIntervalsCheckbox">
+                                        Použít intervaly
+                                    </label>
+
+                                    <div class="d-flex flex-column ms-3">
+                                        <label>Počet intervalů:</label>
+                                        <input type="number" class="form-control input-150 mb-1" min="2" value="10" tabindex="-1"/>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex flex-wrap align-items-end gap-2">
+                                    <button class="btn btn-blue" tabindex="-1">
+                                        <img src="images/view.png" class="nav-icon me-2"/>
+                                        Zobrazit histogram
+                                    </button>
+                                    <button class="btn btn-blue" tabindex="-1">
+                                        <img src="images/export.png" class="nav-icon me-2"/>
+                                        Exportovat histogram
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="section-header">Práce s výsledkem:</div>
+                            <div class="d-flex flex-wrap gap-2 mt-2">
+                                <button class="btn btn-blue" tabindex="-1">
+                                    <img src="images/export.png" class="nav-icon me-2"/>
+                                    Exportovat datovou kolekci
+                                </button>
+                                <button class="btn btn-blue" tabindex="-1">
+                                    <img src="images/export.png" class="nav-icon me-2"/>
+                                    Exportovat SQL INSERT dotazy
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </main>
+</div>
+
+@Body

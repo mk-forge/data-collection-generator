@@ -1,0 +1,61 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "TupleGeneratorGUI/1.0.0": {
+        "dependencies": {
+          "System.DirectoryServices.Protocols": "10.0.7"
+        },
+        "runtime": {
+          "TupleGeneratorGUI.dll": {}
+        }
+      },
+      "System.DirectoryServices.Protocols/10.0.7": {
+        "runtime": {
+          "lib/net9.0/System.DirectoryServices.Protocols.dll": {
+            "assemblyVersion": "10.0.0.7",
+            "fileVersion": "10.0.726.21808"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/linux/lib/net9.0/System.DirectoryServices.Protocols.dll": {
+            "rid": "linux",
+            "assetType": "runtime",
+            "assemblyVersion": "10.0.0.7",
+            "fileVersion": "10.0.726.21808"
+          },
+          "runtimes/osx/lib/net9.0/System.DirectoryServices.Protocols.dll": {
+            "rid": "osx",
+            "assetType": "runtime",
+            "assemblyVersion": "10.0.0.7",
+            "fileVersion": "10.0.726.21808"
+          },
+          "runtimes/win/lib/net9.0/System.DirectoryServices.Protocols.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "10.0.0.7",
+            "fileVersion": "10.0.726.21808"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TupleGeneratorGUI/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "System.DirectoryServices.Protocols/10.0.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-AemhPGgFaSZ5468giPBAXdwqbyKW9ekhbzQWUy/rSbCf3NdsBOzFg2PBfg08x0sN5UK1oZGa7h9SWCwnwTRxyw==",
+      "path": "system.directoryservices.protocols/10.0.7",
+      "hashPath": "system.directoryservices.protocols.10.0.7.nupkg.sha512"
+    }
+  }
+}

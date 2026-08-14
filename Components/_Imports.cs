@@ -1,0 +1,11 @@
+﻿global using System.DirectoryServices.Protocols;
+global using System.Net;
+global using Microsoft.AspNetCore.Components;
+global using System.Globalization;
+global using Microsoft.AspNetCore.Components.Web;
+global using TupleGeneratorGUI.Services;
+global using System.Text;
+global using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+global using Microsoft.JSInterop;
+global using TupleGeneratorGUI.Helpers;
+global using System.Collections.ObjectModel;

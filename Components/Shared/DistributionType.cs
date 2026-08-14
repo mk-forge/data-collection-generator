@@ -1,0 +1,1 @@
+﻿public enum DistributionType { Uniform, Normal, Logonormal, Diagonal, Sierpinski, Bit }

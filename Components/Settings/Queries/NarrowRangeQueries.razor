@@ -1,0 +1,57 @@
+﻿<div class="main-title">Nastavení pro úzké rozsahové dotazy</div>
+<div class="row">
+    <div class="col-auto d-flex flex-column mt-2">
+        <label>Počet dotazů:</label>
+        <input type="number" step="1" class="form-control input-150" @bind="StateService.NarrowRangeQueryCount" @bind:event="oninput" min="1" @onkeydown="OnEnter" disabled="@Busy"/>
+    </div>
+    <div class="col-auto d-flex flex-column mt-2">
+        <label>Rozptyl:</label>
+        <input type="number" step="1" class="form-control input-150" @bind="StateService.NarrowRangeQueryDispersion" @bind:event="oninput" min="1" @onkeydown="OnEnter" disabled="@Busy"/>
+    </div>
+    <div class="col-auto d-flex flex-column mt-2">
+        <label>Podíl prázdných dotazů:</label>
+        <div class="input-group input-150">
+            <input type="number" step="1" class="form-control" @bind="NarrowRangeQueryPercentageValue" @bind:event="oninput" min="0" max="100" @onkeydown="OnEnter" disabled="@Busy"/>
+            <div class="input-group-text">%</div>
+        </div>
+    </div>
+    <div class="col-auto d-flex flex-column mt-2">
+        <label>Pravděpodobnost intervalu:</label>
+        <div class="input-group input-150">
+            <input type="number" step="1" class="form-control" @bind="NarrowRangeQueryIntervalProbabilityValue" @bind:event="oninput" min="1" max="100" @onkeydown="OnEnter" disabled="@Busy"/>
+            <div class="input-group-text">%</div>
+        </div>
+    </div>
+    <div class="col-auto d-flex flex-column mt-2">
+        <div class="d-flex align-items-center justify-content-between">
+            <label class="me-2 mb-0">Maska:</label>
+            <button class="btn btn-blue" @onclick="CreateRandomMask" disabled="@(!StateService.IsCollectionLoaded || @Busy)">
+                <img src="images/dice.png" class="nav-icon me-2 bigger"/>
+                Náhodná maska
+            </button>
+        </div>
+        <textarea class="form-control mt-2" rows="5" cols="40" @bind="StateService.NarrowRangeQueryMask" @bind:event="oninput" disabled="@Busy"></textarea>
+    </div>
+</div>
+
+@code {
+    [Parameter] public StateService StateService { get; set; } = default!;
+    [Parameter] public bool Busy { get; set; }
+    [Parameter] public EventCallback<KeyboardEventArgs> HandleEnter { get; set; }
+
+    private Task OnEnter(KeyboardEventArgs e) => HandleEnter.InvokeAsync(e);
+
+    private double NarrowRangeQueryPercentageValue {
+        get => Math.Round(StateService.NarrowRangeQueryPercentage * 100.0, 10);
+        set => StateService.NarrowRangeQueryPercentage = Math.Round(value / 100.0, 10);
+    }
+
+    private double NarrowRangeQueryIntervalProbabilityValue {
+        get => Math.Round(StateService.NarrowRangeQueryIntervalProbability * 100.0, 10);
+        set => StateService.NarrowRangeQueryIntervalProbability = Math.Round(value / 100.0, 10);
+    }
+
+    private void CreateRandomMask() {
+        StateService.NarrowRangeQueryMask = UiInteractionHelper.CreateRandomMask(StateService.DimensionCount);
+    }
+}

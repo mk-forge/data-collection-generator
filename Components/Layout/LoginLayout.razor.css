@@ -1,0 +1,35 @@
+﻿.top-nav {
+    padding: 12px 20px;
+}
+
+#mode {
+    width: 5rem;
+    min-width: 2.5rem;
+    aspect-ratio: 1/1;
+    border: 1px solid #212529;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+#mode:focus {
+    z-index: 3;
+    position: relative;
+}
+
+.layout-root ::selection {
+    background: transparent;
+    color: inherit;
+}
+
+body {
+    overflow: hidden;
+}
+
+body .layout-root {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+}

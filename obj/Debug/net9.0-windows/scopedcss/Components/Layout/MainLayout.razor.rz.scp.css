@@ -1,0 +1,13 @@
+.page[b-yutar3wbwt] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main[b-yutar3wbwt] {
+    flex: 1;
+}
+
+.loader-visible[b-yutar3wbwt] {
+    display: flex;
+}

@@ -1,0 +1,30 @@
+﻿@page "/{*catchall}"
+@layout LoginLayout
+@inject PageMetadataService PageMetadataService
+
+<PageTitle>Neexistující stránka</PageTitle>
+
+<div class="error-wrapper">
+    <div class="hidden" autofocus></div>
+    <div class="error-box">
+        <div class="error-header">
+            <div class="error-icon"></div>
+            <h1>Neexistující stránka</h1>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(catchall)) {
+            <p>Stránku se nepodařilo najít.<br/>Navštívená URL adresa: <strong>@catchall</strong></p>
+        }
+
+        <a href="/kolekce" class="btn-blue error-button">Zpět na hlavní stránku</a>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? catchall { get; set; }
+
+    protected override void OnInitialized() {
+        PageMetadataService.SetTitle("Neexistující stránka");
+    }
+}

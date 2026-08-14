@@ -1,0 +1,64 @@
+﻿@inject IJSRuntime JS
+@inject NavigationManager NavigationManager
+@inject BusyStateService BusyStateService
+
+<nav class="nav horizontal-nav desktop-only @(BusyStateService.IsBusy ? "disabled" : "")">
+    <NavLink class="nav-link" href="/kolekce" Match="NavLinkMatch.Prefix" tabindex="@(BusyStateService.IsBusy ? -1 : 0)">
+        <img src="images/data_collections.png" class="nav-icon"/>
+        Datové kolekce
+    </NavLink>
+    <button id="mode" type="button" onclick="toggleTheme()" tabindex="@(BusyStateService.IsBusy ? -1 : 0)"></button>
+    <NavLink class="nav-link" href="/dotazy" Match="NavLinkMatch.Prefix" tabindex="@(BusyStateService.IsBusy ? -1 : 0)">
+        <img src="images/queries.png" class="nav-icon"/>
+        Dotazy
+    </NavLink>
+</nav>
+
+<div class="mobile-nav mobile-only @(BusyStateService.IsBusy ? "disabled" : "")">
+    <button class="hamburger" @onclick="ToggleMobileMenu" tabindex="@(BusyStateService.IsBusy ? -1 : 0)">☰</button>
+    <button id="mode-mobile" class="mobile-mode" type="button" onclick="toggleTheme()" tabindex="@(BusyStateService.IsBusy ? -1 : 0)"></button>
+</div>
+
+@if (mobileMenu) {
+    <div class="mobile-menu mobile-only @(BusyStateService.IsBusy ? "disabled" : "")">
+        @if (!IsActive("/kolekce")) {
+            <NavLink class="mobile-link" onclick="@(() => NavigateToWebsite("/kolekce"))" tabindex="@(BusyStateService.IsBusy ? -1 : 0)">
+                <img src="images/data_collections.png" class="nav-icon"/>
+                Datové kolekce
+            </NavLink>
+        }
+
+        @if (!IsActive("/dotazy")) {
+            <NavLink class="mobile-link" @onclick="@(() => NavigateToWebsite("/dotazy"))" tabindex="@(BusyStateService.IsBusy ? -1 : 0)">
+                <img src="images/queries.png" class="nav-icon"/>
+                Dotazy
+            </NavLink>
+        }
+    </div>
+}
+
+@code {
+    private bool mobileMenu = false;
+
+    private void ToggleMobileMenu() {
+        mobileMenu = !mobileMenu;
+    }
+
+    private bool IsActive(string prefix) {
+        return NavigationManager.Uri.Contains(prefix, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private async Task NavigateToWebsite(string url) {
+        mobileMenu = false;
+        await JS.InvokeVoidAsync("applyTheme");
+        NavigationManager.NavigateTo(url);
+    }
+
+    protected override void OnInitialized() {
+        BusyStateService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose() {
+        BusyStateService.OnChange -= StateHasChanged;
+    }
+}

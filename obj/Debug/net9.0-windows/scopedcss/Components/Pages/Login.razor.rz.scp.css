@@ -1,0 +1,50 @@
+.login-wrapper[b-x7aqibbrpt] {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.login-box[b-x7aqibbrpt] {
+    width: 23.4375rem;
+    padding: 1.875rem;
+    border: 1px solid #212529;
+    background-color: #f8f9fa;
+}
+
+.login-box h2[b-x7aqibbrpt] {
+    text-align: center;
+    margin-bottom: 1.25rem;
+}
+
+.login-input[b-x7aqibbrpt] {
+    width: 100%;
+    padding: 0.625rem;
+    margin-bottom: 0.9375rem;
+    border: 1px solid #212529;
+    border-radius: 0;
+    font-size: 1.125rem;
+}
+
+.login-input:focus[b-x7aqibbrpt] {
+    box-shadow: none;
+}
+
+.bigger[b-x7aqibbrpt] {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1.5rem;
+}
+
+.login-icon[b-x7aqibbrpt] {
+    height: 6.25rem;
+    background: url('images/FEI.png') center 100% no-repeat;
+    background-size: 120%;
+}
+
+.login-select[b-x7aqibbrpt] {
+    user-select: text;
+}

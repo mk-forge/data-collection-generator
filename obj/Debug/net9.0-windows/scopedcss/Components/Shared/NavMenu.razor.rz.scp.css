@@ -1,0 +1,19 @@
+#mode[b-o692kx21np] {
+    width: 5rem;
+    min-width: 2.5rem;
+    aspect-ratio: 1/1;
+    border: 1px solid #212529;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+#mode:focus[b-o692kx21np] {
+    z-index: 3;
+    position: relative;
+}
+
+.disabled[b-o692kx21np] {
+    pointer-events: none;
+    opacity: 0.5;
+}

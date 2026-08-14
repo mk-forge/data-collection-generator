@@ -1,0 +1,1 @@
+﻿public enum QueryType { None, Point, PartialMatch, NarrowRange, Range, CartesianRange }

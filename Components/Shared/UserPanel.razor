@@ -1,0 +1,25 @@
+﻿@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject BusyStateService BusyStateService
+
+<div class="user-panel @(BusyStateService.IsBusy ? "busy" : "")">
+    <span class="user-name">@(AuthService.Username?.ToUpper() ?? "")</span>
+    <button type="button" class="btn-red" @onclick="OnLogout" disabled="@BusyStateService.IsBusy">Odhlásit</button>
+</div>
+
+@code {
+    private async Task OnLogout() {
+        await AuthService.SetLoggedOut();
+        NavigationManager.NavigateTo("/prihlaseni");
+    }
+
+    protected override void OnInitialized() {
+        AuthService.OnChange += StateHasChanged;
+        BusyStateService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose() {
+        AuthService.OnChange -= StateHasChanged;
+        BusyStateService.OnChange -= StateHasChanged;
+    }
+}

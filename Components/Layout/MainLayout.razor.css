@@ -1,0 +1,13 @@
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.loader-visible {
+    display: flex;
+}

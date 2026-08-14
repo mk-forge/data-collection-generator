@@ -1,0 +1,49 @@
+﻿@inherits LayoutComponentBase
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+
+@if (_layoutInitialized) {
+    <div class="page">
+        <div id="global-loader" class="loader-overlay">
+            <div class="loader-spinner"></div>
+        </div>
+        <UserPanel/>
+        <div class="top-nav">
+            <NavMenu/>
+        </div>
+
+        <main>
+            <article class="content px-4">
+                @Body
+            </article>
+        </main>
+    </div>
+
+    <div id="blazor-error-ui" data-nosnippet>
+        Došlo k neočekávané chybě.
+        <a href="." class="reload">Obnovit stránku</a>
+        <span class="dismiss">🗙</span>
+    </div>
+} else {
+    <div id="global-loader" class="loader-overlay loader-visible">
+        <div class="loader-spinner"></div>
+    </div>
+}
+
+@code {
+    private bool _layoutInitialized = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        if (firstRender) {
+            await AuthService.InitializeAsync();
+            if (!AuthService.IsLoggedIn) {
+                NavigationManager.NavigateTo("/prihlaseni");
+                return;
+            }
+
+            _layoutInitialized = true;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+}

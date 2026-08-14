@@ -1,0 +1,23 @@
+.custom-progress[b-guj13j1ww5] {
+    position: relative;
+    height: 40px;
+    border-radius: 0;
+}
+
+.progress-bar[b-guj13j1ww5] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+}
+
+.progress-bar-text[b-guj13j1ww5] {
+    font-size: 1.25rem;
+    font-weight: 600;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-shadow: 0 0 4px black, 0 0 8px black
+}

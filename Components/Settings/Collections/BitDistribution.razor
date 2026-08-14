@@ -1,0 +1,34 @@
+﻿<div class="main-title">Nastavení pro bitovou distribuci</div>
+<div class="row">
+    <div class="col-auto d-flex flex-column justify-content-end mt-2">
+        <label>Počet n-tic:</label>
+        <input type="number" @bind="StateService.TupleCount" @bind:event="oninput" class="form-control input-150" min="2" @onkeydown="OnEnter" disabled="@Busy"/>
+    </div>
+    <div class="col-auto d-flex flex-column justify-content-end mt-2">
+        <label>Počet dimenzí:</label>
+        <input type="number" @bind="StateService.DimensionCount" @bind:event="oninput" class="form-control input-150" min="2" @onkeydown="OnEnter" disabled="@Busy"/>
+    </div>
+    <div class="col-auto d-flex flex-column justify-content-end mt-2">
+        <label>Pravděpodobnost:</label>
+        <div class="input-group input-150">
+            <input type="number" step="1" class="form-control" @bind="ProbabilityValue" min="0" max="100" @onkeydown="OnEnter" disabled="@Busy"/>
+            <div class="input-group-text">%</div>
+        </div>
+    </div>
+    <div class="col-auto d-flex flex-column justify-content-end mt-2">
+        <label>Počet bitů přesnosti:</label>
+        <input type="number" @bind="StateService.Digits" @bind:event="oninput" class="form-control input-150" min="1" max="23" @onkeydown="OnEnter" disabled="@Busy"/>
+    </div>
+</div>
+
+@code {
+    [Parameter] public StateService StateService { get; set; } = default!;
+    [Parameter] public bool Busy { get; set; }
+    [Parameter] public EventCallback<KeyboardEventArgs> HandleEnter { get; set; }
+
+    private Task OnEnter(KeyboardEventArgs e) => HandleEnter.InvokeAsync(e);
+    private double ProbabilityValue {
+        get => Math.Round(StateService.Probability * 100.0, 10);
+        set => StateService.Probability = Math.Round(value / 100.0, 10);
+    }
+}

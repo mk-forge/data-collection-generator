@@ -1,0 +1,12 @@
+﻿.user-panel {
+    top: 0;
+    right: 0;
+    font-size: 1.25rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.user-name {
+    padding: 0.3125rem;
+    color: #212529;
+}

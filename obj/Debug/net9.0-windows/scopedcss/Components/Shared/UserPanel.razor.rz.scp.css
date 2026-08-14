@@ -1,0 +1,12 @@
+.user-panel[b-je25m1qora] {
+    top: 0;
+    right: 0;
+    font-size: 1.25rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.user-name[b-je25m1qora] {
+    padding: 0.3125rem;
+    color: #212529;
+}

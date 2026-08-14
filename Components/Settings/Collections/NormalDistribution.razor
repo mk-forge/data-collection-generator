@@ -1,0 +1,35 @@
+﻿<div class="main-title">Nastavení pro normální distribuci</div>
+<div class="row">
+    <div class="col-auto d-flex flex-column justify-content-end mt-2">
+        <label>Počet n-tic:</label>
+        <input type="number" @bind="StateService.TupleCount" @bind:event="oninput" class="form-control input-150" min="2" @onkeydown="OnEnter" disabled="@Busy"/>
+    </div>
+    <div class="col-auto d-flex flex-column justify-content-end mt-2">
+        <label>Počet dimenzí:</label>
+        <input type="number" @bind="StateService.DimensionCount" @bind:event="oninput" class="form-control input-150" min="2" @onkeydown="OnEnter" disabled="@Busy"/>
+    </div>
+    <div class="col-auto d-flex flex-column justify-content-end mt-2">
+        <label>Minimální hodnota:</label>
+        <input type="number" @bind="StateService.MinValue" @bind:event="oninput" class="form-control input-150" min="0" @onkeydown="OnEnter" disabled="@Busy"/>
+    </div>
+    <div class="col-auto d-flex flex-column justify-content-end mt-2">
+        <label>Maximální hodnota:</label>
+        <input type="number" @bind="StateService.MaxValue" @bind:event="oninput" class="form-control input-150" min="1" @onkeydown="OnEnter" disabled="@Busy"/>
+    </div>
+    <div class="col-auto d-flex flex-column justify-content-end mt-2">
+        <label>Střední hodnota:</label>
+        <input type="number" @bind="StateService.Mean" @bind:event="oninput" class="form-control input-150" min="1" @onkeydown="OnEnter" disabled="@Busy"/>
+    </div>
+    <div class="col-auto d-flex flex-column justify-content-end mt-2">
+        <label>Směrodatná odchylka:</label>
+        <input type="number" @bind="StateService.StdDeviation" @bind:event="oninput" class="form-control input-150" min="1" @onkeydown="OnEnter" disabled="@Busy"/>
+    </div>
+</div>
+
+@code {
+    [Parameter] public StateService StateService { get; set; } = default!;
+    [Parameter] public bool Busy { get; set; }
+    [Parameter] public EventCallback<KeyboardEventArgs> HandleEnter { get; set; }
+
+    private Task OnEnter(KeyboardEventArgs e) => HandleEnter.InvokeAsync(e);
+}

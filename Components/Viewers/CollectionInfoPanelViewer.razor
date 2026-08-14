@@ -1,0 +1,50 @@
+﻿<div class="query-sidebar">
+    <div class="card p-0 collection-panel">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <button class="nav-link active" tabindex="-1">
+                    Datová kolekce
+                </button>
+            </li>
+        </ul>
+
+        <div class="collection-panel-content px-3 pb-3">
+            @if (!IsCollectionLoaded) {
+                <div><em>Není načtena žádná datová kolekce.</em></div>
+            } else {
+                @if (!string.IsNullOrEmpty(OriginalFileName)) {
+                    <div class="info-row">
+                        <div class="info-icon file-icon"></div>
+                        <div class="info-text">@OriginalFileName</div>
+                    </div>
+                }
+
+                <div class="info-row">
+                    <div class="info-icon tuple-icon"></div>
+                    <div class="info-text">@UiInteractionHelper.FormatNumber(TupleCount)</div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-icon dimension-icon"></div>
+                    <div class="info-text">@UiInteractionHelper.FormatNumber(DimensionCount)</div>
+                </div>
+
+                @if (!IsCollectionImported && GeneratedDistributionType.HasValue) {
+                    <div class="info-row">
+                        <div class="info-icon distribution-icon"></div>
+                        <div class="info-text">@UiInteractionHelper.GetDistributionName(GeneratedDistributionType.Value)</div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public bool IsCollectionLoaded { get; set; }
+    [Parameter] public bool IsCollectionImported { get; set; }
+    [Parameter] public string? OriginalFileName { get; set; }
+    [Parameter] public uint TupleCount { get; set; }
+    [Parameter] public uint DimensionCount { get; set; }
+    [Parameter] public DistributionType? GeneratedDistributionType { get; set; }
+}

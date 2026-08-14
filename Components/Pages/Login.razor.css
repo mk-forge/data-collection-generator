@@ -1,0 +1,50 @@
+﻿.login-wrapper {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.login-box {
+    width: 23.4375rem;
+    padding: 1.875rem;
+    border: 1px solid #212529;
+    background-color: #f8f9fa;
+}
+
+.login-box h2 {
+    text-align: center;
+    margin-bottom: 1.25rem;
+}
+
+.login-input {
+    width: 100%;
+    padding: 0.625rem;
+    margin-bottom: 0.9375rem;
+    border: 1px solid #212529;
+    border-radius: 0;
+    font-size: 1.125rem;
+}
+
+.login-input:focus {
+    box-shadow: none;
+}
+
+.bigger {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1.5rem;
+}
+
+.login-icon {
+    height: 6.25rem;
+    background: url('images/FEI.png') center 100% no-repeat;
+    background-size: 120%;
+}
+
+.login-select {
+    user-select: text;
+}

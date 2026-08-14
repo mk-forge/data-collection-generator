@@ -1,0 +1,42 @@
+.histogram-div table[b-cu247u3sym] {
+    width: auto;
+    max-width: 1000px;
+    margin: 1.25rem;
+}
+
+    .histogram-div table th[b-cu247u3sym] {
+        text-align: center;
+        font-size: 1.25rem;
+    }
+
+    .histogram-div table td[b-cu247u3sym] {
+        text-align: center;
+        font-size: 1.125rem;
+    }
+
+.table-header[b-cu247u3sym] {
+    border-top: 1px solid #d0d0d0;
+}
+
+.histogram-scroll[b-cu247u3sym] {
+    overflow-x: auto;
+}
+
+.histogram-table-scroll[b-cu247u3sym] {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.header .distribution-icon[b-cu247u3sym], .header .table-icon[b-cu247u3sym] {
+    width: 2rem;
+    height: 2rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.histogram-header[b-cu247u3sym] {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

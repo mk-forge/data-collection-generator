@@ -1,0 +1,75 @@
+﻿@page "/prihlaseni"
+@layout LoginLayout
+@inject IJSRuntime JS
+@inject NavigationManager NavigationManager
+@inject LDAPAuthService LDAPAuthService
+@inject AuthService AuthService
+@inject BusyStateService BusyStateService
+@inject PageMetadataService PageMetadataService
+
+<PageTitle>Přihlášení</PageTitle>
+
+<div class="login-wrapper login-select">
+    <div class="login-box">
+        <div class="login-icon"></div>
+        <h2>Přihlášení</h2>
+
+        @if (loginAttempt) {
+            <div class="alert alert-info status-alert mt-3">
+                <div class="status-icon"></div>
+                <div class="status-text">Probíhá přihlašování...</div>
+            </div>
+        }
+
+        @if (loginFailed) {
+            <div class="alert alert-danger status-alert mt-3">
+                <div class="status-icon"></div>
+                <div class="status-text">Neplatné přihlašovací údaje.</div>
+            </div>
+        }
+
+        <form @onsubmit="OnLogin">
+            <input @bind="username" class="login-input" placeholder="Uživatel" disabled="@BusyStateService.IsBusy"/>
+            <input type="password" @bind="password" class="login-input" placeholder="Heslo" disabled="@BusyStateService.IsBusy"/>
+            <button class="btn-blue bigger" disabled="@BusyStateService.IsBusy">Přihlásit</button>
+        </form>
+    </div>
+</div>
+
+@code {
+    string username = "";
+    string password = "";
+    bool loginAttempt = false;
+    bool loginFailed = false;
+    bool loginSuccessful = false;
+
+    private async Task OnLogin() {
+        loginFailed = false;
+        loginSuccessful = false;
+        loginAttempt = true;
+
+        if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password)) {
+            loginSuccessful = await Task.Run(() => LDAPAuthService.Login(username, password));
+        }
+
+        if (loginSuccessful) {
+            await AuthService.SetLoggedIn(username);
+            FileHelper.CreateUserDirectories(username);
+            NavigationManager.NavigateTo("/kolekce");
+        } else {
+            loginFailed = true;
+            loginAttempt = false;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        if (firstRender) {
+            await AuthService.InitializeAsync();
+            PageMetadataService.SetTitle("Přihlášení");
+
+            if (AuthService.IsLoggedIn) {
+                NavigationManager.NavigateTo("/kolekce");
+            }
+        }
+    }
+}

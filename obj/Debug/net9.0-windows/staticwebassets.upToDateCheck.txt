@@ -1,0 +1,139 @@
+wwwroot\app.css
+wwwroot\favicon.ico
+wwwroot\favicon.png
+wwwroot\favicon_data_collections.png
+wwwroot\favicon_error.png
+wwwroot\favicon_login.png
+wwwroot\favicon_queries.png
+wwwroot\images\checkmark_black.png
+wwwroot\images\checkmark_white.png
+wwwroot\images\darkmode.png
+wwwroot\images\data_collections.png
+wwwroot\images\dice.png
+wwwroot\images\dimension_black.png
+wwwroot\images\dimension_white.png
+wwwroot\images\distribution_black.png
+wwwroot\images\distribution_white.png
+wwwroot\images\error.png
+wwwroot\images\export.png
+wwwroot\images\FEI.png
+wwwroot\images\file.png
+wwwroot\images\generate.png
+wwwroot\images\import.png
+wwwroot\images\info.png
+wwwroot\images\lightmode.png
+wwwroot\images\next.png
+wwwroot\images\previous.png
+wwwroot\images\queries.png
+wwwroot\images\shuffle.png
+wwwroot\images\sort.png
+wwwroot\images\success.png
+wwwroot\images\table_black.png
+wwwroot\images\table_white.png
+wwwroot\images\tuple_black.png
+wwwroot\images\tuple_white.png
+wwwroot\images\view.png
+wwwroot\images\warning.png
+wwwroot\images\z-sort.png
+wwwroot\js\favicon.js
+wwwroot\js\histogram.js
+wwwroot\js\import.js
+wwwroot\js\spinner.js
+wwwroot\js\storage.js
+wwwroot\js\theme.js
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\app.css
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\favicon.ico
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\js\favicon.js
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\js\histogram.js
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\js\import.js
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\js\spinner.js
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\js\storage.js
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\js\theme.js
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap.css
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\js\bootstrap.js
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
+C:\Users\misak\OneDrive\Dokumenty\Vysoká škola\5. semestr\BP\TupleGeneratorGUI\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map

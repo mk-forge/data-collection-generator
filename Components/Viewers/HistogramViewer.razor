@@ -1,0 +1,99 @@
+﻿@if (Visible) {
+    <div class="histogram-div mb-3">
+        <div class="histogram-scroll">
+            <div class="header main-title d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="distribution-icon"></div>
+                    @if (UseIntervals) {
+                        <div><strong>Sloupcový graf</strong> (dimenze @Page/@PageCount)</div>
+                    } else {
+                        <div><strong>Sloupcový graf</strong> (stránka @Page/@PageCount)</div>
+                    }
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button class="btn btn-blue" @onclick="PreviousGraphPage">
+                        <img src="images/previous.png" class="page-icon"/>
+                    </button>
+                    <input type="number" class="form-control input-130" min="1" max="@PageCount" @bind="Page" @bind:after="(() => ValidatePage.InvokeAsync(Page))" disabled="@Busy"/>
+                    <button class="btn btn-blue" @onclick="NextGraphPage">
+                        <img src="images/next.png" class="page-icon"/>
+                    </button>
+                </div>
+            </div>
+
+            <canvas id="histogramCanvas" tabindex="-1"></canvas>
+        </div>
+
+        <div class="header table-header main-title d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-2">
+                <div class="table-icon"></div>
+                @if (UseIntervals) {
+                    <div><strong>Tabulka</strong> (dimenze @Page/@PageCount)</div>
+                } else {
+                    <div><strong>Tabulka</strong> (stránka @Page/@PageCount)</div>
+                }
+            </div>
+
+            <div class="d-flex gap-2">
+                <button class="btn btn-blue" @onclick="PreviousTablePage">
+                    <img src="images/previous.png" class="page-icon"/>
+                </button>
+                <input type="number" class="form-control input-130" min="1" max="@PageCount" @bind="Page" @bind:after="(() => ValidatePage.InvokeAsync(Page))" disabled="@Busy"/>
+                <button class="btn btn-blue" @onclick="NextTablePage">
+                    <img src="images/next.png" class="page-icon"/>
+                </button>
+            </div>
+        </div>
+
+        <div class="histogram-table-scroll">
+            <table class="table" tabindex="-1">
+                <thead>
+                    <tr>
+                        @if (UseIntervals) {
+                            <th>Interval</th>
+                        } else {
+                            <th>Dimenze</th>
+                        }
+
+                        <th>Minimální hodnota</th>
+                        <th>Maximální hodnota</th>
+                        <th>Počet unikátních hodnot</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (HistogramItem item in PageItems!) {
+                        <tr>
+                            @if (UseIntervals) {
+                                <td>@item.Interval</td>
+                            } else {
+                                <td>@item.Dimension</td>
+                            }
+
+                            <td>@UiInteractionHelper.FormatValue(item.Min)</td>
+                            <td>@UiInteractionHelper.FormatValue(item.Max)</td>
+                            <td>@item.UniqueCount</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public bool Visible { get; set; }
+    [Parameter] public bool Busy { get; set; }
+
+    [Parameter] public bool UseIntervals { get; set; }
+    [Parameter] public int Page { get; set; }
+    [Parameter] public int PageCount { get; set; }
+    [Parameter] public List<HistogramItem>? HistogramData { get; set; }
+    [Parameter] public IEnumerable<HistogramItem>? PageItems { get; set; }
+
+    [Parameter] public EventCallback PreviousGraphPage { get; set; }
+    [Parameter] public EventCallback NextGraphPage { get; set; }
+    [Parameter] public EventCallback PreviousTablePage { get; set; }
+    [Parameter] public EventCallback NextTablePage { get; set; }
+    [Parameter] public EventCallback<int> ValidatePage { get; set; }
+}

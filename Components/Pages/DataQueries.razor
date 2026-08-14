@@ -1,0 +1,301 @@
+﻿@page "/dotazy"
+@inject IJSRuntime JS
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject BusyStateService BusyStateService
+@inject StateService StateService
+@inject LocalStorageSyncService LocalStorageSyncService
+@inject PageMetadataService PageMetadataService
+
+<PageTitle>Generátor dotazů</PageTitle>
+
+<div class="@(BusyStateService.IsBusy ? "busy" : "")">
+    @if (!string.IsNullOrEmpty(StateService.QueryStatuses[StateService.QueryIndex])) {
+        <div class="alert @StateService.QueryStatusTypes[StateService.QueryIndex] status-alert">
+            <div class="status-icon"></div>
+            <div class="status-text">@((MarkupString)StateService.QueryStatuses[StateService.QueryIndex])</div>
+        </div>
+    }
+</div>
+
+<div class="@(string.IsNullOrEmpty(StateService.QueryStatuses[StateService.QueryIndex]) ? "no-margin" : "some-margin")">
+    <ProgressBar @ref="ProgressBar"/>
+</div>
+
+<div class="@(BusyStateService.IsBusy ? "busy" : "")">
+    <div class="mt-3">
+        <div class="query-layout">
+            <div class="query-main">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <button class="nav-link @(StateService.QueryTab == QueryType.Point ? "active" : "")" @onclick="() => StateService.QueryTab = QueryType.Point" tabindex="@(BusyStateService.IsBusy ? -1 : 0)">
+                            Bodové
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link @(StateService.QueryTab == QueryType.PartialMatch ? "active" : "")" @onclick="() => StateService.QueryTab = QueryType.PartialMatch" tabindex="@(BusyStateService.IsBusy ? -1 : 0)">
+                            Částečně shodné
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link @(StateService.QueryTab == QueryType.NarrowRange ? "active" : "")" @onclick="() => StateService.QueryTab = QueryType.NarrowRange" tabindex="@(BusyStateService.IsBusy ? -1 : 0)">
+                            Úzké rozsahové
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link @(StateService.QueryTab == QueryType.Range ? "active" : "")" @onclick="() => StateService.QueryTab = QueryType.Range" tabindex="@(BusyStateService.IsBusy ? -1 : 0)">
+                            Rozsahové
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link @(StateService.QueryTab == QueryType.CartesianRange ? "active" : "")" @onclick="() => StateService.QueryTab = QueryType.CartesianRange" tabindex="@(BusyStateService.IsBusy ? -1 : 0)">
+                            Kartézské rozsahové
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="card mb-3 p-3">
+                   @if (StateService.QueryTab == QueryType.Point) {
+                        <PointQueries StateService="StateService" Busy="BusyStateService.IsBusy" HandleEnter="HandleEnter"/>
+                    } else if (StateService.QueryTab == QueryType.PartialMatch) {
+                        <PartialMatchQueries StateService="StateService" Busy="BusyStateService.IsBusy" HandleEnter="HandleEnter"/>
+                    } else if (StateService.QueryTab == QueryType.NarrowRange) {
+                        <NarrowRangeQueries StateService="StateService" Busy="BusyStateService.IsBusy" HandleEnter="HandleEnter"/>
+                    } else if (StateService.QueryTab == QueryType.Range) {
+                        <RangeQueries StateService="StateService" Busy="BusyStateService.IsBusy" HandleEnter="HandleEnter"/>
+                    } else if (StateService.QueryTab == QueryType.CartesianRange) {
+                        <CartesianRangeQueries StateService="StateService" Busy="BusyStateService.IsBusy" HandleEnter="HandleEnter"/>
+                    }
+
+                    @if (StateService.QueryTab != QueryType.None) {
+                        <div class="section-header">Práce s dotazy:</div>
+                        <div class="d-flex flex-wrap gap-2 mt-2">
+                            <button class="btn btn-blue" @onclick="GenerateQueries" disabled="@(!StateService.IsCollectionLoaded || BusyStateService.IsBusy)">
+                                <img src="images/generate.png" class="nav-icon me-2 smaller"/>
+                                Generovat dotazy
+                            </button>
+                            <button class="btn btn-blue" @onclick="ViewQueries" disabled="@(!StateService.IsCollectionLoaded || BusyStateService.IsBusy)">
+                                <img src="images/view.png" class="nav-icon me-2"/>
+                                Zobrazit dotazy
+                            </button>
+                        </div>
+
+                        <div class="section-header">Práce s výsledkem:</div>
+                        <div class="d-flex flex-wrap gap-2 mt-2">
+                            <button class="btn btn-blue" @onclick="ExportQueries" disabled="@(!StateService.IsCollectionLoaded || BusyStateService.IsBusy)">
+                                <img src="images/export.png" class="nav-icon me-2"/>
+                                Exportovat dotazy
+                            </button>
+                            <button class="btn btn-blue" @onclick="ExportSQLSelectQueries" disabled="@(!StateService.IsCollectionLoaded || BusyStateService.IsBusy)">
+                                <img src="images/export.png" class="nav-icon me-2"/>
+                                Exportovat SQL SELECT dotazy
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <CollectionInfoPanelViewer IsCollectionLoaded="StateService.IsCollectionLoaded" IsCollectionImported="StateService.IsCollectionImported" OriginalFileName="@StateService.OriginalCollectionFileName"
+                TupleCount="StateService.CollectionTupleCount" DimensionCount="StateService.CollectionDimensionCount" GeneratedDistributionType="StateService.GeneratedDistributionType"
+            />
+        </div>
+
+        <QueryViewer Visible="StateService.ShowQueries && StateService.QueryTab == StateService.GeneratedQueryType" Busy="BusyStateService.IsBusy"
+            Queries="StateService.Queries" Page="StateService.QueryPage" PageCount="StateService.QueryPageCount"
+            PreviousPage="StateService.PreviousQueryPage" NextPage="StateService.NextQueryPage" ValidatePage="StateService.ValidateQueryPage"
+        />
+    </div>
+</div>
+
+@code {
+    private ProgressBar? ProgressBar { get; set; }
+
+    private bool ValidateParameters() {
+        StringBuilder errors = new StringBuilder();
+
+        if (StateService.QueryTab == QueryType.Point) {
+            ValidationHelper.ValidateCount(StateService.PointQueryCount, errors);
+            ValidationHelper.ValidatePercentage(StateService.PointQueryPercentage, errors);
+        } else if (StateService.QueryTab == QueryType.PartialMatch) {
+            ValidationHelper.ValidateCount(StateService.PartialMatchQueryCount, errors);
+            ValidationHelper.ValidatePercentage(StateService.PartialMatchQueryPercentage, errors);
+        } else if (StateService.QueryTab == QueryType.NarrowRange) {
+            ValidationHelper.ValidateCount(StateService.NarrowRangeQueryCount, errors);
+            ValidationHelper.ValidateMinAtLeast(StateService.NarrowRangeQueryDispersion, 1, "Rozptyl", errors);
+            ValidationHelper.ValidateMask(StateService.NarrowRangeQueryMask, StateService.CollectionDimensionCount, errors);
+            ValidationHelper.ValidatePercentage(StateService.NarrowRangeQueryPercentage, errors);
+            ValidationHelper.ValidateIntervalProbability(StateService.NarrowRangeQueryIntervalProbability, errors);
+        } else if (StateService.QueryTab == QueryType.Range) {
+            ValidationHelper.ValidateCount(StateService.RangeQueryCount, errors);
+            ValidationHelper.ValidateRangeSizes(StateService.RangeQuerySetSizeStart, StateService.RangeQuerySetSizeEnd, StateService.CollectionTupleCount, errors);
+        } else if (StateService.QueryTab == QueryType.CartesianRange) {
+            ValidationHelper.ValidateCount(StateService.CartesianRangeQueryCount, errors);
+            ValidationHelper.ValidateRangeSizes(StateService.CartesianRangeQuerySetSizeStart, StateService.CartesianRangeQuerySetSizeEnd, StateService.CollectionTupleCount, errors);
+            ValidationHelper.ValidateMinAtLeast(StateService.CartesianRangeQueryIntervals, 1, "Počet intervalů", errors);
+            ValidationHelper.ValidateIntervals(StateService.CartesianRangeQuerySetSizeEnd, StateService.CartesianRangeQueryIntervals, errors);
+        }
+
+        StateService.QueryValidationStatuses[StateService.QueryIndex] = errors.ToString();
+        return errors.Length == 0;
+    }
+
+    private async Task GenerateQueries() {
+        if (!ValidateParameters()) {
+            StateService.QueryStatuses[StateService.QueryIndex] = StateService.QueryValidationStatuses[StateService.QueryIndex] + "Dotazy nebyly vygenerovány.";
+            StateService.QueryStatusTypes[StateService.QueryIndex] = "alert-danger";
+            StateService.QueryValidationStatuses[StateService.QueryIndex] = "";
+            return;
+        }
+
+        await StateService.RunWithProgressQuery(async () => {
+            UiInteractionHelper.ResetOtherTabs(StateService.QueryStatuses, StateService.QueryIndex);
+            StateService.ShowQueries = false;
+            StateService.Collection?.CloseQueryStream();
+
+            await Task.Run(() => {
+                if (StateService.QueryTab == QueryType.Point)
+                    StateService.Collection!.GeneratePointQueries(StateService.PointQueryCount, StateService.PointQueryPercentage);
+                else if (StateService.QueryTab == QueryType.PartialMatch)
+                    StateService.Collection!.GeneratePartialMatchQueries(StateService.PartialMatchQueryCount, StateService.PartialMatchQueryPercentage);
+                else if (StateService.QueryTab == QueryType.NarrowRange)
+                    StateService.Collection!.GenerateNarrowRangeQueries(StateService.NarrowRangeQueryCount, StateService.NarrowRangeQueryDispersion, StateService.NarrowRangeQueryIntervalProbability, StateService.NarrowRangeQueryMask, StateService.NarrowRangeQueryPercentage);
+                else if (StateService.QueryTab == QueryType.Range) {
+                    CheckZOrder();
+                    StateService.Collection!.GenerateRangeQueries(StateService.RangeQueryCount, StateService.RangeQuerySetSizeStart, StateService.RangeQuerySetSizeEnd);
+                    StateService.ShouldRefreshCollection = true;
+                } else if (StateService.QueryTab == QueryType.CartesianRange) {
+                    CheckZOrder();
+                    StateService.Collection!.GenerateCartesianRangeQueries(StateService.CartesianRangeQueryCount, StateService.CartesianRangeQuerySetSizeStart, StateService.CartesianRangeQuerySetSizeEnd, StateService.CartesianRangeQueryIntervals);
+                    StateService.ShouldRefreshCollection = true;
+                    StateService.GeneratedIntervalsCount = StateService.CartesianRangeQueryIntervals;
+                }
+            });
+
+            await StateService.LoadQueries();
+            StateService.GeneratedQueryType = StateService.QueryTab;
+            StateService.GeneratedQueryCount = StateService.GetGeneratedQueryCount();
+        }, "Dotazy byly vygenerovány.", "Chyba při generování dotazů");
+    }
+
+    private async Task ViewQueries() {
+        await StateService.RunWithProgressQuery(async () => {
+            await JS.InvokeVoidAsync("ShowLoader");
+
+            if (!StateService.AreQueriesActive) {
+                SetStatus("Dotazy se nepodařilo zobrazit, protože nejsou vygenerované žádné dotazy tohoto typu.", "alert-warning");
+                return;
+            }
+
+            StateService.ShowQueries = true;
+            StateService.QueryPage = 1;
+            await StateService.LoadQueries();
+        }, "Dotazy byly zobrazeny.", "Chyba při zobrazování dotazů", async () => await JS.InvokeVoidAsync("HideLoader"));
+    }
+
+    private async Task ExportQueries() {
+        await StateService.RunWithProgressQuery(async () => {
+            if (!StateService.AreQueriesActive) {
+                SetStatus("Dotazy se nepodařilo exportovat, protože nejsou vygenerované žádné dotazy tohoto typu.", "alert-warning");
+                return;
+            }
+
+            string fileName = $"Generated_{StateService.QueryTab}_Queries.qtf";
+            string filePath = FileHelper.GetUserQueryExportPath(AuthService.Username!, fileName);
+            await Task.Run(() => StateService.Collection?.ExportCollection(TupleGeneratorWrapper.CollectionToExport.Queries, filePath));
+        }, "Dotazy byly exportovány do souboru.", "Chyba při exportování dotazů");
+    }
+
+    private async Task ExportSQLSelectQueries() {
+        await StateService.RunWithProgressQuery(async () => {
+            if (!StateService.AreQueriesActive) {
+                SetStatus("SQL SELECT dotazy se nepodařilo exportovat, protože nejsou vygenerované žádné dotazy tohoto typu.", "alert-warning");
+                return;
+            }
+
+            string fileName = $"Generated_{StateService.QueryTab}_Selects.sql";
+            string filePath = FileHelper.GetUserSelectsPath(AuthService.Username!, fileName);
+            await Task.Run(() => StateService.Collection?.GenerateSQLSelects(filePath));
+        }, "SQL SELECT dotazy byly exportovány do souboru.", "Chyba při exportování SQL SELECT dotazů");
+    }
+
+    public async Task ImportCollection(string filePath, string fileName) {
+        await StateService.RunWithProgressQuery(() => StateService.ImportCollection(filePath, fileName, SetStatus), "Datová kolekce byla importována.", "Chyba při importování datové kolekce");
+    }
+
+    protected override void OnInitialized() {
+        StateService.ProgressChanged += OnProgressChanged;
+
+        if (!StateService.IsCollectionLoaded)
+            for (int i = 0; i < StateService.QueryStatuses.Length; i++)
+                StateService.QueryStatuses[i] = "Nejprve je nutné vygenerovat nebo importovat datovou kolekci.";
+        else
+            StateService.NarrowRangeQueryMask = UiInteractionHelper.CreateMask(StateService.CollectionDimensionCount);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        var (tupleCount, dimensionCount, distribution, fileName, filePath, originalFileName) = await LocalStorageSyncService.GetCollection();
+
+        if (firstRender) {
+            UiInteractionHelper.CleanupTempFiles();
+            await AuthService.InitializeAsync();
+            if (!AuthService.IsLoggedIn) {
+                NavigationManager.NavigateTo("/prihlaseni");
+                return;
+            }
+
+            PageMetadataService.SetTitle("Generátor dotazů");
+
+            if (!string.IsNullOrEmpty(tupleCount) && !string.IsNullOrEmpty(dimensionCount)) {
+                StateService.CollectionTupleCount = uint.Parse(tupleCount);
+                StateService.CollectionDimensionCount = uint.Parse(dimensionCount);
+            }
+
+            StateService.IsCollectionImported = string.IsNullOrEmpty(distribution);
+            if (StateService.IsCollectionImported && !string.IsNullOrEmpty(filePath) && File.Exists(filePath) && !StateService.IsCollectionLoaded) {
+                SetStatus("Probíhá importování datové kolekce...", "alert-info");
+                await InvokeAsync(StateHasChanged);
+                await ImportCollection(filePath, fileName);
+                await InvokeAsync(StateHasChanged);
+            }
+
+            if (StateService.IsCollectionLoaded) {
+                StateService.NarrowRangeQueryMask = UiInteractionHelper.CreateMask(StateService.CollectionDimensionCount);
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+
+        if (!string.IsNullOrEmpty(fileName))
+            StateService.CollectionFileName = fileName;
+
+        if (!string.IsNullOrEmpty(originalFileName))
+            StateService.OriginalCollectionFileName = originalFileName;
+
+        if (!string.IsNullOrEmpty(distribution))
+            StateService.GeneratedDistributionType = Enum.Parse<DistributionType>(distribution);
+    }
+
+    private void SetStatus(string status, string statusType) {
+        UiInteractionHelper.SetStatus(StateService.QueryStatuses, StateService.QueryStatusTypes, StateService.QueryIndex, status, statusType);
+    }
+
+    private void CheckZOrder() {
+        if (StateService.NeedsZOrder()) {
+            StateService.QueryStatuses[StateService.QueryIndex] = "Probíhá seřazení datové kolekce podle Z-Order...";
+            StateService.QueryStatusTypes[StateService.QueryIndex] = "alert-info";
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async Task HandleEnter(KeyboardEventArgs e) {
+        await UiInteractionHelper.HandleEnter(e, BusyStateService.IsBusy || !StateService.IsCollectionLoaded, GenerateQueries);
+    }
+
+    private void OnProgressChanged(double progress) {
+        ProgressBar?.SetProgress((int)(progress));
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose() {
+        StateService.ProgressChanged -= OnProgressChanged;
+    }
+}

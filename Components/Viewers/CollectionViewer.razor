@@ -1,0 +1,48 @@
+﻿@inject StateService StateService
+
+@if (Visible) {
+    <div class="alert output mt-3" tabindex="-1">
+        <div class="header main-title d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex align-items-center gap-2">
+                <div class="collection-icon"></div>
+                <strong>Datová kolekce</strong> (stránka @Page/@PageCount)
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-blue" @onclick="PreviousPage">
+                    <img src="images/previous.png" class="page-icon"/>
+                </button>
+                <input type="number" class="form-control input-150" min="1" max="@PageCount" @bind="Page" @bind:after="(() => ValidatePage.InvokeAsync(Page))" disabled="@Busy"/>
+                <button class="btn btn-blue" @onclick="NextPage">
+                    <img src="images/next.png" class="page-icon"/>
+                </button>
+            </div>
+        </div>
+
+        <div class="output-wrapper">
+            @foreach (string tuple in Tuples) {
+                <div>@tuple</div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public bool Visible { get; set; }
+    [Parameter] public bool Busy { get; set; }
+
+    [Parameter] public int Page { get; set; }
+    [Parameter] public int PageCount { get; set; }
+    [Parameter] public ObservableCollection<string> Tuples { get; set; } = new ObservableCollection<string>();
+
+    [Parameter] public EventCallback PreviousPage { get; set; }
+    [Parameter] public EventCallback NextPage { get; set; }
+    [Parameter] public EventCallback<int> ValidatePage { get; set; }
+
+    protected override void OnInitialized() {
+        StateService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose() {
+        StateService.OnChange -= StateHasChanged;
+    }
+}

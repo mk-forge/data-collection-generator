@@ -1,0 +1,42 @@
+﻿.histogram-div table {
+    width: auto;
+    max-width: 1000px;
+    margin: 1.25rem;
+}
+
+    .histogram-div table th {
+        text-align: center;
+        font-size: 1.25rem;
+    }
+
+    .histogram-div table td {
+        text-align: center;
+        font-size: 1.125rem;
+    }
+
+.table-header {
+    border-top: 1px solid #d0d0d0;
+}
+
+.histogram-scroll {
+    overflow-x: auto;
+}
+
+.histogram-table-scroll {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.header .distribution-icon, .header .table-icon {
+    width: 2rem;
+    height: 2rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.histogram-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

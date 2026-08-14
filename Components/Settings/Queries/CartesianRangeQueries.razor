@@ -1,0 +1,27 @@
+﻿<div class="main-title">Nastavení pro kartézské rozsahové dotazy</div>
+<div class="row">
+    <div class="col-auto d-flex flex-column justify-content-end mt-2">
+        <label>Počet dotazů:</label>
+        <input type="number" step="1" class="form-control input-150" @bind="StateService.CartesianRangeQueryCount" @bind:event="oninput" min="1" @onkeydown="OnEnter" disabled="@Busy"/>
+    </div>
+    <div class="col-auto d-flex flex-column justify-content-end mt-2">
+        <label>Min. počet n-tic v dotazu:</label>
+        <input type="number" step="1" class="form-control input-150" @bind="StateService.CartesianRangeQuerySetSizeStart" @bind:event="oninput" min="0" max="@StateService.CollectionTupleCount - 1" @onkeydown="OnEnter" disabled="@Busy"/>
+    </div>
+    <div class="col-auto d-flex flex-column justify-content-end mt-2">
+        <label>Max. počet n-tic v dotazu:</label>
+        <input type="number" step="1" class="form-control input-150" @bind="StateService.CartesianRangeQuerySetSizeEnd" @bind:event="oninput" min="1" max="@StateService.CollectionTupleCount - 1" @onkeydown="OnEnter" disabled="@Busy"/>
+    </div>
+    <div class="col-auto d-flex flex-column justify-content-end mt-2">
+        <label>Počet intervalů:</label>
+        <input type="number" step="1" class="form-control input-150" @bind="StateService.CartesianRangeQueryIntervals" @bind:event="oninput" min="1" @onkeydown="OnEnter" disabled="@Busy"/>
+    </div>
+</div>
+
+@code {
+    [Parameter] public StateService StateService { get; set; } = default!;
+    [Parameter] public bool Busy { get; set; }
+    [Parameter] public EventCallback<KeyboardEventArgs> HandleEnter { get; set; }
+
+    private Task OnEnter(KeyboardEventArgs e) => HandleEnter.InvokeAsync(e);
+}

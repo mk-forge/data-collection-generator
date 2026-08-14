@@ -1,0 +1,556 @@
+﻿@page "/kolekce"
+@inject IJSRuntime JS
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject BusyStateService BusyStateService
+@inject StateService StateService
+@inject LocalStorageSyncService LocalStorageSyncService
+@inject PageMetadataService PageMetadataService
+
+<PageTitle>Generátor datových kolekcí</PageTitle>
+
+<div class="@(BusyStateService.IsBusy ? "busy" : "")">
+    @if (!string.IsNullOrEmpty(StateService.CollectionStatuses[StateService.CollectionIndex])) {
+        <div class="alert @StateService.CollectionStatusTypes[StateService.CollectionIndex] status-alert">
+            <div class="status-icon"></div>
+            <div class="status-text">@((MarkupString)StateService.CollectionStatuses[StateService.CollectionIndex])</div>
+        </div>
+    }
+</div>
+
+<div class="@(string.IsNullOrEmpty(StateService.CollectionStatuses[StateService.CollectionIndex]) ? "no-margin" : "some-margin")">
+    <ProgressBar @ref="ProgressBar"/>
+</div>
+
+<div class="@(BusyStateService.IsBusy ? "busy" : "")">
+    <div class="mt-3">
+        <div class="query-layout">
+            <div class="query-main">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <button class="nav-link @(StateService.CollectionTab == DistributionType.Uniform ? "active" : "")" @onclick="() => StateService.CollectionTab = DistributionType.Uniform" tabindex="@(BusyStateService.IsBusy ? -1 : 0)">
+                            Uniformní
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link @(StateService.CollectionTab == DistributionType.Normal ? "active" : "")" @onclick="() => StateService.CollectionTab = DistributionType.Normal" tabindex="@(BusyStateService.IsBusy ? -1 : 0)">
+                            Normální
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link @(StateService.CollectionTab == DistributionType.Logonormal ? "active" : "")" @onclick="() => StateService.CollectionTab = DistributionType.Logonormal" tabindex="@(BusyStateService.IsBusy ? -1 : 0)">
+                            Logonormální
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link @(StateService.CollectionTab == DistributionType.Diagonal ? "active" : "")" @onclick="() => StateService.CollectionTab = DistributionType.Diagonal" tabindex="@(BusyStateService.IsBusy ? -1 : 0)">
+                            Diagonální
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link @(StateService.CollectionTab == DistributionType.Sierpinski ? "active" : "")" @onclick="() => StateService.CollectionTab = DistributionType.Sierpinski" tabindex="@(BusyStateService.IsBusy ? -1 : 0)">
+                            Sierpińského
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link @(StateService.CollectionTab == DistributionType.Bit ? "active" : "")" @onclick="() => StateService.CollectionTab = DistributionType.Bit" tabindex="@(BusyStateService.IsBusy ? -1 : 0)">
+                            Bitová
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="card mb-3 p-3">
+                    @if (StateService.CollectionTab == DistributionType.Uniform) {
+                        <UniformDistribution StateService="StateService" Busy="BusyStateService.IsBusy" HandleEnter="HandleEnter"/>
+                    } else if (StateService.CollectionTab == DistributionType.Normal) {
+                        <NormalDistribution StateService="StateService" Busy="BusyStateService.IsBusy" HandleEnter="HandleEnter"/>
+                    } else if (StateService.CollectionTab == DistributionType.Logonormal) {
+                        <LogonormalDistribution StateService="StateService" Busy="BusyStateService.IsBusy" HandleEnter="HandleEnter"/>
+                    } else if (StateService.CollectionTab == DistributionType.Diagonal) {
+                        <DiagonalDistribution StateService="StateService" Busy="BusyStateService.IsBusy" HandleEnter="HandleEnter"/>
+                    } else if (StateService.CollectionTab == DistributionType.Sierpinski) {
+                        <SierpinskiDistribution StateService="StateService" Busy="BusyStateService.IsBusy" HandleEnter="HandleEnter"/>
+                    } else if (StateService.CollectionTab == DistributionType.Bit) {
+                        <BitDistribution StateService="StateService" Busy="BusyStateService.IsBusy" HandleEnter="HandleEnter"/>
+                    }
+
+                    <InputFile @ref="InputFile" OnChange="OnFileSelected" accept=".ctf" class="hidden" tabindex="-1"/>
+                    <div class="section-header">Práce s datovou kolekcí:</div>
+                    <div class="d-flex flex-wrap gap-2 mt-2">
+                        <button class="btn btn-blue" @onclick="GenerateCollection" disabled="@BusyStateService.IsBusy">
+                            <img src="images/generate.png" class="nav-icon me-2 smaller"/>
+                            Generovat datovou kolekci
+                        </button>
+                        <button class="btn btn-blue" @onclick="ImportCollection" disabled="@BusyStateService.IsBusy">
+                            <img src="images/import.png" class="nav-icon me-2"/>
+                            Importovat datovou kolekci
+                        </button>
+                        <button class="btn btn-blue" @onclick="ViewCollection" disabled="@BusyStateService.IsBusy">
+                            <img src="images/view.png" class="nav-icon me-2"/>
+                            Zobrazit datovou kolekci
+                        </button>
+                        <button class="btn btn-blue" @onclick="ShuffleCollection" disabled="@BusyStateService.IsBusy">
+                            <img src="images/shuffle.png" class="nav-icon me-2"/>
+                            Promíchat datovou kolekci
+                        </button>
+                        <button class="btn btn-blue" @onclick="SortCollection" disabled="@BusyStateService.IsBusy">
+                            <img src="images/sort.png" class="nav-icon me-2"/>
+                            Seřadit datovou kolekci (lexikograficky)
+                        </button>
+                        <button class="btn btn-blue" @onclick="SortCollectionByZOrder" disabled="@BusyStateService.IsBusy">
+                            <img src="images/z-sort.png" class="nav-icon me-2"/>
+                            Seřadit datovou kolekci (podle Z-Order)
+                        </button>
+                    </div>
+
+                    <div class="section-header">Práce s histogramem:</div>
+                    <div class="mt-2">
+                        <div class="form-check mb-2 d-flex align-items-start gap-2">
+                            <input class="form-check-input" type="checkbox" checked="@StateService.UseHistogramIntervals" id="useIntervalsCheckbox" disabled="@BusyStateService.IsBusy" @onchange="StateService.OnHistogramModeChanged"/>
+                            <label for="useIntervalsCheckbox">
+                                Použít intervaly
+                            </label>
+
+                            @if (StateService.UseHistogramIntervals) {
+                                <div class="d-flex flex-column ms-3">
+                                    <label>Počet intervalů:</label>
+                                    <input type="number" @bind="StateService.CollectionHistogramIntervals" @bind:event="oninput" class="form-control input-130 mb-1" min="2" max="@StateService.CollectionTupleCount" disabled="@BusyStateService.IsBusy" @onkeydown="@(e => HandleHistogramEnter(e))"/>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="d-flex flex-wrap align-items-end gap-2">
+                            <button class="btn btn-blue" @onclick="ViewHistogram" disabled="@BusyStateService.IsBusy">
+                                <img src="images/view.png" class="nav-icon me-2"/>
+                                Zobrazit histogram
+                            </button>
+                            <button class="btn btn-blue" @onclick="ExportHistogram" disabled="@BusyStateService.IsBusy">
+                                <img src="images/export.png" class="nav-icon me-2"/>
+                                Exportovat histogram
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="section-header">Práce s výsledkem:</div>
+                    <div class="d-flex flex-wrap gap-2 mt-2">
+                        <button class="btn btn-blue" @onclick="ExportCollection" disabled="@BusyStateService.IsBusy">
+                            <img src="images/export.png" class="nav-icon me-2"/>
+                            Exportovat datovou kolekci
+                        </button>
+                        <button class="btn btn-blue" @onclick="ExportSQLInsertQueries" disabled="@BusyStateService.IsBusy">
+                            <img src="images/export.png" class="nav-icon me-2"/>
+                            Exportovat SQL INSERT dotazy
+                        </button>
+                    </div>
+                </div>
+
+                <CollectionViewer Visible="StateService.Tuples.Count > 0 && StateService.CollectionTab == StateService.GeneratedDistributionType"
+                    Busy="BusyStateService.IsBusy" Tuples="StateService.Tuples" Page="StateService.CollectionPage" PageCount="StateService.CollectionPageCount"
+                    PreviousPage="StateService.PreviousCollectionPage" NextPage="StateService.NextCollectionPage" ValidatePage="StateService.ValidateCollectionPage"
+                />
+
+                <HistogramViewer Visible="StateService.CollectionHistogramItems.Count > 0 && StateService.CollectionTab == StateService.GeneratedDistributionType"
+                    Busy="BusyStateService.IsBusy" UseIntervals="StateService.UseHistogramIntervals" HistogramData="StateService.CollectionHistogramItems"
+                    PageItems="StateService.HistogramPageItems" Page="StateService.CollectionHistogramPage" PageCount="StateService.HistogramPageCount"
+                    PreviousGraphPage="PreviousHistogramGraphPage" NextGraphPage="NextHistogramGraphPage" PreviousTablePage="StateService.PreviousHistogramTablePage"
+                    NextTablePage="StateService.NextHistogramTablePage" ValidatePage="ValidateHistogramPage"
+                />
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private ProgressBar? ProgressBar { get; set; }
+    private InputFile? InputFile;
+
+    private bool ValidateParameters() {
+        StringBuilder errors = new StringBuilder();
+        ValidationHelper.ValidateMinAtLeast(StateService.TupleCount, 2, "Počet n‑tic", errors);
+        ValidationHelper.ValidateMinAtLeast(StateService.DimensionCount, 2, "Počet dimenzí", errors);
+
+        if (StateService.CollectionTab == DistributionType.Uniform) {
+            ValidationHelper.ValidateMinMax(StateService.MinValue, StateService.MaxValue, errors);
+        } else if (StateService.CollectionTab == DistributionType.Normal) {
+            ValidationHelper.ValidateMinMax(StateService.MinValue, StateService.MaxValue, errors);
+            ValidationHelper.ValidateMinAtLeast(StateService.Mean, 1, "Střední hodnota", errors);
+            ValidationHelper.ValidateMinAtLeast(StateService.StdDeviation, 1, "Směrodatná odchylka", errors);
+        } else if (StateService.CollectionTab == DistributionType.Logonormal) {
+            ValidationHelper.ValidateMinAtLeast(StateService.MinValue, 1, "Minimální hodnota", errors);
+            ValidationHelper.ValidateMinMax(StateService.MinValue, StateService.MaxValue, errors);
+        } else if (StateService.CollectionTab == DistributionType.Diagonal) {
+            ValidationHelper.ValidateRange(StateService.Buffer, 0.0, 1.0, "Odchylka od diagonály", errors);
+            ValidationHelper.ValidateRange(StateService.Percentage, 0.0, 1.0, "Podíl shodných dvojic", errors);
+        } else if (StateService.CollectionTab == DistributionType.Sierpinski) {
+            ValidationHelper.ValidateEven(StateService.DimensionCount, "Počet dimenzí", errors);
+        } else if (StateService.CollectionTab == DistributionType.Bit) {
+            ValidationHelper.ValidateRange(StateService.Probability, 0.0, 1.0, "Pravděpodobnost", errors);
+            ValidationHelper.ValidateRange(StateService.Digits, 1, 23, "Počet bitů přesnosti", errors);
+        }
+
+        StateService.CollectionValidationStatuses[StateService.CollectionIndex] = errors.ToString();
+        return errors.Length == 0;
+    }
+
+    private async Task GenerateCollection() {
+        if (!ValidateParameters()) {
+            SetStatus(StateService.CollectionValidationStatuses[StateService.CollectionIndex] + "Datová kolekce nebyla vygenerována.", "alert-danger");
+            StateService.CollectionValidationStatuses[StateService.CollectionIndex] = "";
+            return;
+        }
+
+        await StateService.RunWithProgressCollection(async () => {
+            StateService.Collection?.Cleanup();
+
+            await Task.Run(() => {
+                if (StateService.CollectionTab == DistributionType.Uniform) {
+                    StateService.ReplaceCollection(new TupleGeneratorWrapper.CollectionGenerator_cInt(StateService.DimensionCount, StateService.TupleCount, TupleGeneratorWrapper.Distribution.Uniform, StateService.MinValue, StateService.MaxValue));
+                } else if (StateService.CollectionTab == DistributionType.Normal) {
+                    StateService.ReplaceCollection(new TupleGeneratorWrapper.CollectionGenerator_cUInt(StateService.DimensionCount, StateService.TupleCount, TupleGeneratorWrapper.Distribution.Normal, StateService.MinValue, StateService.MaxValue));
+                    ((TupleGeneratorWrapper.CollectionGenerator_cUInt)StateService.Collection!).SetMean(StateService.Mean);
+                    ((TupleGeneratorWrapper.CollectionGenerator_cUInt)StateService.Collection).SetStdDeviation(StateService.StdDeviation);
+                } else if (StateService.CollectionTab == DistributionType.Logonormal) {
+                    StateService.ReplaceCollection(new TupleGeneratorWrapper.CollectionGenerator_cInt(StateService.DimensionCount, StateService.TupleCount, TupleGeneratorWrapper.Distribution.Logonormal, StateService.MinValue, StateService.MaxValue));
+                } else if (StateService.CollectionTab == DistributionType.Diagonal) {
+                    StateService.ReplaceCollection(new TupleGeneratorWrapper.CollectionGenerator_cDouble(StateService.DimensionCount, StateService.TupleCount, TupleGeneratorWrapper.Distribution.Diagonal));
+                    ((TupleGeneratorWrapper.CollectionGenerator_cDouble)StateService.Collection!).SetBuffer(StateService.Buffer);
+                    ((TupleGeneratorWrapper.CollectionGenerator_cDouble)StateService.Collection).SetPercentage(StateService.Percentage);
+                } else if (StateService.CollectionTab == DistributionType.Sierpinski) {
+                    StateService.ReplaceCollection(new TupleGeneratorWrapper.CollectionGenerator_cDouble(StateService.DimensionCount, StateService.TupleCount, TupleGeneratorWrapper.Distribution.Sierpinski));
+                } else if (StateService.CollectionTab == DistributionType.Bit) {
+                    StateService.ReplaceCollection(new TupleGeneratorWrapper.CollectionGenerator_cFloat(StateService.DimensionCount, StateService.TupleCount, TupleGeneratorWrapper.Distribution.Bit));
+                    ((TupleGeneratorWrapper.CollectionGenerator_cFloat)StateService.Collection!).SetProbability(StateService.Probability);
+                    ((TupleGeneratorWrapper.CollectionGenerator_cFloat)StateService.Collection).SetDigits((int)StateService.Digits);
+                }
+
+                StateService.Collection?.Load();
+            });
+
+            StateService.GeneratedDistributionType = StateService.CollectionTab;
+            StateService.CollectionTupleCount = StateService.TupleCount;
+            StateService.CollectionDimensionCount = StateService.DimensionCount;
+            StateService.OriginalCollectionFileName = "";
+            StateService.IsCollectionLoaded = true;
+            StateService.ResetCollectionState();
+            StateService.ResetQueryState();
+            UiInteractionHelper.ResetOtherTabs(StateService.CollectionStatuses, StateService.CollectionIndex);
+
+            await LocalStorageSyncService.SetCollection(StateService.TupleCount.ToString(), StateService.DimensionCount.ToString(), StateService.GeneratedDistributionType.ToString()!, "", "", "");
+        }, "Datová kolekce byla vygenerována.", "Chyba při generování datové kolekce");
+    }
+
+    private async Task ViewCollection() {
+        await StateService.RunWithProgressCollection(async () => {
+            await JS.InvokeVoidAsync("ShowLoader");
+
+            if (!StateService.IsCollectionActive) {
+                SetStatus("Datovou kolekci se nepodařilo zobrazit, protože není načtena žádná datová kolekce pro tuto distribuci.", "alert-warning");
+                return;
+            }
+
+            StateService.CollectionHistogramItems.Clear();
+            StateService.CollectionPage = 1;
+            StateService.IsCollectionViewed = true;
+            StateService.ShouldRefreshCollection = false;
+            await StateService.LoadTuples();
+        }, "Datová kolekce byla zobrazena.", "Chyba při zobrazení datové kolekce", async () => await JS.InvokeVoidAsync("HideLoader"));
+    }
+
+    private async Task Sort(TupleGeneratorWrapper.TypeOfSort sortType, string checkActionText, string successMessage, string errorPrefix) {
+        await StateService.RunWithProgressCollection(async () => {
+            if (!StateService.IsCollectionActive) {
+                SetStatus($"Datovou kolekci se nepodařilo {checkActionText}, protože není načtena žádná datová kolekce pro tuto distribuci.", "alert-warning");
+                return;
+            }
+
+            await Task.Run(() => StateService.Collection!.SortTuples(sortType));
+
+            StateService.IsCollectionChanged = true;
+            StateService.AreCollectionInsertsChanged = true;
+        }, successMessage, errorPrefix);
+    }
+
+    private async Task SortCollection() =>
+        await Sort(TupleGeneratorWrapper.TypeOfSort.Alphabetical, "seřadit", "Datová kolekce byla lexikograficky seřazena.", "Chyba při seřazení datové kolekce");
+
+    private async Task SortCollectionByZOrder() =>
+        await Sort(TupleGeneratorWrapper.TypeOfSort.Z_Order, "seřadit podle Z-Order", "Datová kolekce byla seřazena podle Z-Order.", "Chyba při seřazení datové kolekce podle Z-Order");
+
+    private async Task ShuffleCollection() {
+        await StateService.RunWithProgressCollection(async () => {
+            await JS.InvokeVoidAsync("ShowLoader");
+
+            if (!StateService.IsCollectionActive) {
+                SetStatus("Datovou kolekci se nepodařilo promíchat, protože není načtena žádná datová kolekce pro tuto distribuci.", "alert-warning");
+                return;
+            }
+
+            StateService.Collection!.UnsortTuples();
+            StateService.IsCollectionChanged = true;
+            StateService.AreCollectionInsertsChanged = true;
+        }, "Datová kolekce byla promíchána.", "Chyba při promíchání datové kolekce", async () => await JS.InvokeVoidAsync("HideLoader"));
+    }
+
+    private async void ImportCollection() {
+        await JS.InvokeVoidAsync("OpenFilePicker", InputFile?.Element);
+    }
+
+    private async Task OnFileSelected(InputFileChangeEventArgs e) {
+        IBrowserFile file = e.File;
+
+        if (file.Size == 0) {
+            SetStatus("Soubor je prázdný.", "alert-danger");
+            return;
+        }
+
+        string originalName = file.Name;
+        string nameWithoutExtension = Path.GetFileNameWithoutExtension(originalName);
+        string extension = Path.GetExtension(originalName);
+
+        int guidIndex = nameWithoutExtension.LastIndexOf('_');
+        if (guidIndex != -1) {
+            string possibleGuid = nameWithoutExtension.Substring(guidIndex + 1);
+            if (Guid.TryParse(possibleGuid, out _))
+                nameWithoutExtension = nameWithoutExtension.Substring(0, guidIndex);
+        }
+
+        string fileName = $"{nameWithoutExtension}_{Guid.NewGuid()}{extension}";
+        string filePath = FileHelper.GetUserImportCollectionPath(AuthService.Username!, fileName);
+        StateService.OriginalCollectionFileName = originalName;
+
+        SetStatus("Probíhá kopírování datové kolekce...", "alert-info");
+        await InvokeAsync(StateHasChanged);
+        StateService.IsCopyingFile = true;
+
+        await StateService.RunWithProgressCollection(async () => {
+            int bufferSize = 64 * 1024 * 1024;
+            long totalBytes = file.Size;
+            long bytesCopied = 0;
+            int lastProgress = -1;
+
+            using (Stream input = file.OpenReadStream(maxAllowedSize: 250_000_000_000)) {
+                using (FileStream output = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize, FileOptions.Asynchronous | FileOptions.SequentialScan)) {
+                    byte[] buffer = new byte[bufferSize];
+                    int read;
+
+                    while ((read = await input.ReadAsync(buffer, 0, buffer.Length)) > 0) {
+                        await output.WriteAsync(buffer, 0, read);
+                        bytesCopied += read;
+
+                        if (totalBytes > 0) {
+                            int progress = (int)((double)bytesCopied / totalBytes * 100);
+                            if (progress > 100) progress = 100;
+                            if (progress != lastProgress) {
+                                ProgressBar?.SetProgress(progress);
+                                lastProgress = progress;
+                            }
+                        }
+                    }
+                }
+            }
+        }, "", "Chyba při importování datové kolekce");
+
+        StateService.IsCopyingFile = false;
+        SetStatus("Probíhá importování datové kolekce...", "alert-info");
+        await InvokeAsync(StateHasChanged);
+        await ImportCollection(filePath, fileName);
+    }
+
+    public async Task ImportCollection(string filePath, string fileName) {
+        await StateService.RunWithProgressCollection(() => StateService.ImportCollection(filePath, fileName, SetStatus), "Datová kolekce byla importována.", "Chyba při importování datové kolekce");
+    }
+
+    private async Task ExportCollection() {
+        await StateService.RunWithProgressCollection(async () => {
+            if (!StateService.IsCollectionActive) {
+                SetStatus("Datovou kolekci se nepodařilo exportovat, protože není načtena žádná datová kolekce pro tuto distribuci.", "alert-warning");
+                return;
+            }
+
+            if (!StateService.IsCollectionChanged) {
+                SetStatus("Tato datová kolekce již byla exportována.", "alert-info");
+                return;
+            }
+
+            string fileName = $"Generated_{StateService.GeneratedDistributionType}_Collection.ctf";
+            string filePath = FileHelper.GetUserExportCollectionPath(AuthService.Username!, fileName);
+            await Task.Run(() => StateService.Collection!.ExportCollection(TupleGeneratorWrapper.CollectionToExport.Tuples, filePath));
+
+            StateService.CollectionFilePath = filePath;
+            StateService.CollectionFileName = fileName;
+            StateService.IsCollectionImported = false;
+            StateService.IsCollectionChanged = false;
+            await LocalStorageSyncService.SetCollection(StateService.CollectionTupleCount.ToString(), StateService.CollectionDimensionCount.ToString(), StateService.GeneratedDistributionType.ToString()!, fileName, filePath, fileName);
+        }, "Datová kolekce byla exportována do souboru.", "Chyba při exportování datové kolekce");
+    }
+
+    private async Task ViewHistogram() {
+        await StateService.RunWithProgressCollection(async () => {
+            uint intervalCount = StateService.UseHistogramIntervals ? StateService.CollectionHistogramIntervals : 0;
+
+            if (StateService.UseHistogramIntervals) {
+                StringBuilder errors = new StringBuilder();
+                ValidationHelper.ValidateHistogramIntervals(intervalCount, StateService.CollectionTupleCount, errors);
+
+                if (errors.Length > 0) {
+                    SetStatus(errors.ToString() + "Histogram nebyl zobrazen.", "alert-danger");
+                    return;
+                }
+            }
+
+            if (!StateService.IsCollectionActive) {
+                SetStatus("Histogram se nepodařilo zobrazit, protože není načtena žádná datová kolekce pro tuto distribuci.", "alert-warning");
+                return;
+            }
+
+            await Task.Run(() => StateService.GenerateHistogram(intervalCount));
+            await InvokeAsync(StateHasChanged);
+            UiInteractionHelper.ResetOtherTabs(StateService.CollectionStatuses, StateService.CollectionIndex);
+
+            if (StateService.CollectionHistogramItems.Count > 0) {
+                await JS.InvokeVoidAsync("resetHistogramWidth");
+                await JS.InvokeVoidAsync("drawHistogram", StateService.HistogramPageItems.ToList(), StateService.CollectionHistogramPage, StateService.UseHistogramIntervals);
+            }
+        }, "Histogram byl zobrazen.", "Chyba při zobrazení histogramu");
+    }
+
+    private async Task ExportHistogram() {
+        await StateService.RunWithProgressCollection(async () => {
+            uint intervalCount = StateService.UseHistogramIntervals ? StateService.CollectionHistogramIntervals : 0;
+
+            if (StateService.UseHistogramIntervals) {
+                StringBuilder errors = new StringBuilder();
+                ValidationHelper.ValidateHistogramIntervals(intervalCount, StateService.CollectionTupleCount, errors);
+
+                if (errors.Length > 0) {
+                    SetStatus(errors.ToString() + "Histogram nebyl exportován.", "alert-danger");
+                    return;
+                }
+            }
+
+            if (StateService.LastHistogramIntervals == intervalCount) {
+                SetStatus("Histogram s tímto počtem intervalů již byl exportován.", "alert-info");
+                return;
+            }
+
+            if (!StateService.IsCollectionActive) {
+                SetStatus("Histogram se nepodařilo exportovat, protože není načtena žádná datová kolekce pro tuto distribuci.", "alert-warning");
+                return;
+            }
+
+            string fileName = $"Generated_{StateService.GeneratedDistributionType}_Histogram.txt";
+            string filePath = FileHelper.GetUserHistogramPath(AuthService.Username!, fileName);
+            await Task.Run(() => StateService.Collection!.PrintHistogram(filePath, intervalCount));
+            StateService.LastHistogramIntervals = (int)intervalCount;
+        }, "Histogram byl exportován do souboru.", "Chyba při exportování histogramu");
+    }
+
+    private async Task ExportSQLInsertQueries() {
+        await StateService.RunWithProgressCollection(async () => {
+            if (!StateService.IsCollectionActive) {
+                SetStatus("SQL INSERT dotazy se nepodařilo exportovat, protože není načtena žádná datová kolekce pro tuto distribuci.", "alert-warning");
+                return;
+            }
+
+            if (!StateService.AreCollectionInsertsChanged) {
+                SetStatus("SQL INSERT dotazy pro tuto datovou kolekci již byly exportovány.", "alert-info");
+                return;
+            }
+
+            string fileName = $"Generated_{StateService.GeneratedDistributionType}_Inserts.sql";
+            string filePath = FileHelper.GetUserInsertsPath(AuthService.Username!, fileName);
+            await Task.Run(() => StateService.Collection!.GenerateSQLInserts(filePath));
+            StateService.AreCollectionInsertsChanged = false;
+        }, "SQL INSERT dotazy byly exportovány do souboru.", "Chyba při exportování SQL INSERT dotazů");
+    }
+
+    protected override void OnInitialized() {
+        if (StateService.IsCollectionLoaded)
+            SetStatus($"Datová kolekce byla načtena.", "alert-success");
+
+        StateService.ProgressChanged += OnProgressChanged;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        if (firstRender) {
+            UiInteractionHelper.CleanupTempFiles();
+            await AuthService.InitializeAsync();
+            if (!AuthService.IsLoggedIn) {
+                NavigationManager.NavigateTo("/prihlaseni");
+                return;
+            }
+
+            PageMetadataService.SetTitle("Generátor datových kolekcí");
+            var (tupleCount, dimensionCount, distribution, fileName, filePath, originalFileName) = await LocalStorageSyncService.GetCollection();
+
+            if (!string.IsNullOrEmpty(tupleCount) && !string.IsNullOrEmpty(dimensionCount)) {
+                StateService.CollectionTupleCount = uint.Parse(tupleCount);
+                StateService.CollectionDimensionCount = uint.Parse(dimensionCount);
+                StateService.IsCollectionImported = string.IsNullOrEmpty(distribution);
+
+                if (!string.IsNullOrEmpty(distribution))
+                    StateService.GeneratedDistributionType = Enum.Parse<DistributionType>(distribution);
+
+                if (!string.IsNullOrEmpty(fileName))
+                    StateService.CollectionFileName = fileName;
+
+                if (!string.IsNullOrEmpty(originalFileName))
+                    StateService.OriginalCollectionFileName = originalFileName;
+            }
+
+            if (StateService.IsCollectionImported && !string.IsNullOrEmpty(filePath) && File.Exists(filePath) && !StateService.IsCollectionLoaded) {
+                SetStatus("Probíhá importování datové kolekce...", "alert-info");
+                await InvokeAsync(StateHasChanged);
+                await ImportCollection(filePath, fileName);
+                await InvokeAsync(StateHasChanged);
+            }
+
+            if (StateService.ShouldRefreshCollection && StateService.IsCollectionViewed) {
+                await ViewCollection();
+                StateService.ShouldRefreshCollection = false;
+                StateService.IsCollectionViewed = false;
+                SetStatus("Datová kolekce byla aktualizována.", "alert-info");
+                await InvokeAsync(StateHasChanged);
+            }
+
+            if (StateService.CollectionHistogramItems.Count > 0 && StateService.CollectionTab == StateService.GeneratedDistributionType)
+                await JS.InvokeVoidAsync("drawHistogram", StateService.HistogramPageItems.ToList(), StateService.CollectionHistogramPage, StateService.UseHistogramIntervals);
+        }
+    }
+
+    private void SetStatus(string status, string statusType) {
+        UiInteractionHelper.SetStatus(StateService.CollectionStatuses, StateService.CollectionStatusTypes, StateService.CollectionIndex, status, statusType);
+    }
+
+    private async Task PreviousHistogramGraphPage() {
+        StateService.PreviousHistogramTablePage();
+        await JS.InvokeVoidAsync("drawHistogram", StateService.HistogramPageItems.ToList(), StateService.CollectionHistogramPage, StateService.UseHistogramIntervals);
+    }
+
+    private async Task NextHistogramGraphPage() {
+        StateService.NextHistogramTablePage();
+        await JS.InvokeVoidAsync("drawHistogram", StateService.HistogramPageItems.ToList(), StateService.CollectionHistogramPage, StateService.UseHistogramIntervals);
+    }
+
+    private async Task ValidateHistogramPage(int page) {
+        StateService.ValidateHistogramPage(page);
+        await JS.InvokeVoidAsync("drawHistogram", StateService.HistogramPageItems.ToList(), StateService.CollectionHistogramPage, StateService.UseHistogramIntervals);
+    }
+
+    private async Task HandleEnter(KeyboardEventArgs e) {
+        await UiInteractionHelper.HandleEnter(e, BusyStateService.IsBusy, GenerateCollection);
+    }
+
+    private async Task HandleHistogramEnter(KeyboardEventArgs e) {
+        await UiInteractionHelper.HandleEnter(e, BusyStateService.IsBusy, ViewHistogram);
+    }
+
+    private void OnProgressChanged(double progress) {
+        ProgressBar?.SetProgress((int)(progress));
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose() {
+        StateService.ProgressChanged -= OnProgressChanged;
+    }
+}
