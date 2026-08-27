@@ -12,9 +12,9 @@ The original tool was RAM only, so it worked well for small datasets but failed 
 
 ## Tech stack
 
-- Frontend: Blazor Server, Bootstrap, HTML, CSS, JavaScript
-- Backend: C#, .NET
-- Core library: C++, wrapped with SWIG
+- **Frontend:** Blazor Server, Bootstrap, HTML, CSS, JavaScript
+- **Backend:** C#, .NET
+- **Core library:** C++, wrapped with SWIG
 
 ## Features
 
@@ -41,16 +41,3 @@ The original tool was RAM only, so it worked well for small datasets but failed 
 1. Download the latest `DataCollectionGenerator.exe` from [Releases](https://github.com/mk-forge/data-collection-generator/releases).
 2. Run the executable.
 3. The application opens at `http://localhost:5000`.
-
-## Features
-
-- Authentication with university LDAP server
-- Import data collections
-- Generate data collections (uniform, normal, lognormal, diagonal, Sierpiński, bit)
-- Generate query collections (point, partial match, narrow range, range, cartesian range)
-- Generate & visualize histograms
-- Sort & shuffle data collections
-- Export to files (`.ctf` for data collections, `.qtf` for query collections, `.txt` for histograms, `.sql` for SQL INSERT queries and SQL SELECT queries)
-- Real-time progress bar for long operations
-- Pagination for large collections and histograms (to prevent browser overload)
-- Toggle for dark/light theme
