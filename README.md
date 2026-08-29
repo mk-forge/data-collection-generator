@@ -14,7 +14,8 @@ The original tool was RAM‑only, so it worked well for small datasets but faile
 
 - **Frontend:** Blazor Server, Bootstrap, HTML, CSS, JavaScript
 - **Backend:** C#, .NET
-- **Core library:** C++, wrapped with SWIG
+- **Core library:** C++
+- **Wrapper:** SWIG
 
 ## Features
 
