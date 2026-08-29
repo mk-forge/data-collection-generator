@@ -1,5 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @inject IJSRuntime JS
+@inject PageMetadataService PageMetadataService
+@implements IDisposable
 
 <div class="blur-background"></div>
 
@@ -156,3 +158,21 @@
 </div>
 
 @Body
+
+@code {
+    protected override void OnInitialized() {
+        PageMetadataService.OnChange += UpdateFavicon;
+        UpdateFavicon();
+    }
+
+    private void UpdateFavicon() {
+        string favicon = PageMetadataService.Favicon;
+        InvokeAsync(async () => {
+            await JS.InvokeVoidAsync("setFavicon", favicon);
+        });
+    }
+
+    public void Dispose() {
+        PageMetadataService.OnChange -= UpdateFavicon;
+    }
+}
