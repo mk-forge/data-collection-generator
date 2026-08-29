@@ -1,6 +1,11 @@
 ﻿function setFavicon(url) {
-    let link = document.getElementById("dynamic-favicon");
+    let old = document.getElementById('dynamic-favicon');
+    if (old) old.remove();
 
-    if (link)
-        link.href = url;
+    let link = document.createElement('link');
+    link.id = 'dynamic-favicon';
+    link.rel = 'icon';
+    link.type = 'image/png';
+    link.href = url;
+    document.head.appendChild(link);
 };

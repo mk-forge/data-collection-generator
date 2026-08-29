@@ -2,6 +2,8 @@
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JS
+@inject PageMetadataService PageMetadataService
+@implements IDisposable
 
 @if (_layoutInitialized) {
     <div class="page">
@@ -33,6 +35,22 @@
 
 @code {
     private bool _layoutInitialized = false;
+
+    protected override void OnInitialized() {
+        PageMetadataService.OnChange += UpdateFavicon;
+        UpdateFavicon();
+    }
+
+    private void UpdateFavicon() {
+        string favicon = PageMetadataService.Favicon;
+        InvokeAsync(async () => {
+            await JS.InvokeVoidAsync("setFavicon", favicon);
+        });
+    }
+
+    public void Dispose() {
+        PageMetadataService.OnChange -= UpdateFavicon;
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender) {
         if (firstRender) {
