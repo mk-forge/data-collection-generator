@@ -4,7 +4,7 @@ Web application for generating data collections, query collections and statistic
 
 ## Overview
 
-This project was developed as my bachelor thesis at VŠB-TUO. It builds on an existing tool for generating data collections and queries, originally written by a previous student. I fixed performance and stability issues, added support for generating query collections from decimal data collections, and replaced the original command-line interface with a proper Blazor Server GUI.
+This project was developed as my bachelor thesis at VŠB-TUO. It builds on an existing tool for generating data collections and queries, originally written by a previous student. I fixed performance and stability issues and added support for generating query collections from decimal data collections. I also replaced the original command-line interface with a proper Blazor Server GUI.
 
 ## Performance and Stability
 
@@ -21,7 +21,7 @@ The original tool was RAM only, so it worked well for small datasets but failed 
 
 - Authentication against the university LDAP server
 - Import existing data collections
-- Generate data collections (uniform, normal, lognormal, diagonal, Sierpiński, bit)
+- Generate data collections (uniform, normal, logonormal, diagonal, Sierpiński, bit)
 - Generate query collections (point, partial match, narrow range, range, cartesian range)
 - Generate and visualize histograms
 - Sort and shuffle data collections
