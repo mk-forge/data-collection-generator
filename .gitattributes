@@ -1,0 +1,3 @@
+Wrapper/** linguist-vendored
+wwwroot/lib/** linguist-vendored
+*.razor linguist-language=C#
