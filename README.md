@@ -12,10 +12,11 @@ The original tool was RAM‑only, so it worked well for small datasets but faile
 
 ## Tech stack
 
-- **Frontend:** Blazor Server, Bootstrap, HTML, CSS, JavaScript
+- **Frontend:** Blazor Server
 - **Backend:** C#, .NET
-- **Core library:** C++
+- **Core:** C++
 - **Wrapper:** SWIG
+- **Library:** Bootstrap
 
 ## Features
 
@@ -32,10 +33,10 @@ The original tool was RAM‑only, so it worked well for small datasets but faile
 
 ## Screenshots
 
-![Login page](./Screenshots/login.png)
-![Data collections page](./Screenshots/collections.png)
-![Histogram](./Screenshots/histogram.png)
-![Query collections page](./Screenshots/queries.png)
+![Login page](https://raw.githubusercontent.com/mk-forge/data-collection-generator/main/Screenshots/login.png)
+![Data collections page](https://raw.githubusercontent.com/mk-forge/data-collection-generator/main/Screenshots/collections.png)
+![Histogram](https://raw.githubusercontent.com/mk-forge/data-collection-generator/main/Screenshots/histogram.png)
+![Query collections page](https://raw.githubusercontent.com/mk-forge/data-collection-generator/main/Screenshots/queries.png)
 
 ## Installation
 
