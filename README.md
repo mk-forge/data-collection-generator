@@ -10,6 +10,10 @@ This project was developed as my bachelor thesis at VŠB-TUO. It builds on an ex
 
 The original tool was RAM only, so it worked well for small datasets but failed on larger ones. I switched to batch disk I/O, added memory mapped files, parallel sorting and caching. This makes it a bit faster for small datasets and more importantly allows it to handle large collections without crashing. It trades a little raw speed for a lot of stability and scalability.
 
+## Video
+
+[![Watch the video](https://raw.githubusercontent.com/mk-forge/data-collection-generator/main/Screenshots/video_thumbnail.png)](https://videy.co/v/?id=Ftjc6ZSc1)
+
 ## Tech stack
 
 - **Frontend:** Blazor Server
