@@ -1,5 +1,11 @@
 # Data Collection & Query Generator
 
+![Blazor](https://img.shields.io/badge/Blazor-512BD4)
+![C%23](https://img.shields.io/badge/C%23-512BD4?logo=csharp&logoColor=white)
+![.NET](https://img.shields.io/badge/.NET-512BD4?logo=dotnet&logoColor=white)
+![C%2B%2B](https://img.shields.io/badge/C%2B%2B-00599C?logo=cplusplus&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?logo=bootstrap&logoColor=white)
+
 Web application for generating data collections, query collections and statistical functions.
 
 ## Overview
@@ -44,6 +50,12 @@ The original tool was RAM only, so it worked well for small datasets but failed 
 
 ## Installation
 
+> **Note:** Login requires a VŠB-TUO account.
+
 1. Download the latest `DataCollectionGenerator.exe` from [Releases](https://github.com/mk-forge/data-collection-generator/releases).
 2. Run the executable.
 3. The application opens at `http://localhost:5000`.
+
+## License
+
+[All rights reserved](LICENSE)
