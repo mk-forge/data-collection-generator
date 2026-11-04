@@ -51,7 +51,8 @@ The original tool was RAM only, so it worked well for small datasets but failed 
 
 ## Installation
 
-> **Note:** Login requires a VŠB-TUO account.
+> [!IMPORTANT]
+> Login requires a VŠB-TUO account.
 
 1. Download the latest `DataCollectionGenerator.exe` from [Releases](https://github.com/mk-forge/data-collection-generator/releases).
 2. Run the executable.
